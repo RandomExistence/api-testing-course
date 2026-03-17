@@ -8,7 +8,7 @@ http:
   url: "{{AUNTIE_SOM_NOODLE_BASE_URL}}/menu"
   auth:
     type: bearer
-    token: "{{TOKEN"
+    token: "{{TOKEN}}"
 
 runtime:
   assertions:

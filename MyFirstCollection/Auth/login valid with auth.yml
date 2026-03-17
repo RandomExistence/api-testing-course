@@ -1,0 +1,45 @@
+info:
+  name: login valid with auth
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{AUNTIE_SOM_NOODLE_BASE_URL}}/auth/login"
+  body:
+    type: json
+    data: |-
+      {
+        "username":"student",
+        "password":"hungry"
+      }
+  auth:
+    type: bearer
+    token: "{{TOKEN}}"
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        let data = res.body;
+        bru.setEnvVar("TOKEN", data.accessToken);
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+    - expression: res.body.accessToken
+      operator: isDefined
+    - expression: res.body.accessToken
+      operator: isString
+    - expression: res.body.accessToken
+      operator: matches
+      value: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    - expression: res.body.expiresIn
+      operator: eq
+      value: "3600"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

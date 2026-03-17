@@ -150,7 +150,34 @@ Your task is to create a comprehensive Bruno collection that validates the entir
 2.  **Update your README.md** (the one in your fork) with:
     - A summary of the bugs you discovered.
     - How your tests detect these bugs.
-4.  **Send the GitHub link** to your instructor via Discord.
+3.  **Send the GitHub link** to your instructor via Discord.
 
 ---
 *Good luck. Auntie Som is counting on you!* 🍜🔥
+
+## 🕷️ BUGS I FOUND
+1.  `quantity` field in `POST /orders` does NOT check whether the value is a natural number or not.
+- Found this bug while testing for boundaries, and then tried other invalid value such as string.
+- To replicate, simply make a request to `POST /orders` and parse this to body
+  ```json
+  {
+    "orderId":1,
+    "quantity":"<any non-natural-number value your keybaord could paste to>"
+  }
+  ```
+2.  `GET /orders/<orderid>` does NOT require request to have AUTH BEARER token.
+- Found this bug while testing for backend app behavior for authorized and unauthorized users.
+- To replicate, create an order through `POST /orders`; then, from response, use the value from field `orderId` to make a request to `GET /orders/<orderid>` WITHOUT providing bearer token.
+3.  `accessToken` sent from `POST /auth/login` does NOT expire WITHIN 1 hour.
+- Found this bug while I go grab lunch and came back and continuing doing testing before realizing that the token should have already expired.(I made that up, I just saw that the token could expire so I tested it)
+- To replicate, request to `POST /auth/login`. Wait for 1 hour 1 min and then make a request to `POST /orders` with valid body and the token from `POST /auth/login`.
+4.  `totalPrice` sent from `POST /orders` is 5 less than actual price.
+- Found this bug when testing for correct value inside fields of `POST /orders`.
+- To replicate, request to `POST /orders` with valid AUTH BEARER token and body such as
+  ```json
+  {
+    "itemId":1,
+    "quantity":4
+  }
+  ```
+you should expect `totalPrice` to be equal to 200, but is 195

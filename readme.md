@@ -179,4 +179,5 @@ Your task is to create a comprehensive Bruno collection that validates the entir
     "itemId":1,
     "quantity":4
   }
-  ```you should expect `totalPrice` to be equal to 200, but is 195.
+  ```
+- you should expect `totalPrice` to be equal to 200, but is 195.

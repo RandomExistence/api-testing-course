@@ -1,0 +1,44 @@
+info:
+  name: create order
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: "{{AUNTIE_SOM_NOODLE_BASE_URL}}/orders"
+  body:
+    type: json
+    data: |-
+      {
+        "itemId":1,
+        "quantity":4
+      }
+  auth:
+    type: bearer
+    token: "{{TOKEN}}"
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        let data = res.body;
+        bru.setEnvVar("LAST_ORDER_ID", data.orderId);
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+    - expression: res.body.orderId
+      operator: isString
+    - expression: res.body.status
+      operator: isString
+    - expression: res.body.totalPrice
+      operator: isNumber
+    - expression: rese.body.totalPrice
+      operator: eq
+      value: "200"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

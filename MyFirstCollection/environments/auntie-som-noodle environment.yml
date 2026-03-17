@@ -1,0 +1,8 @@
+name: auntie-som-noodle environment
+variables:
+  - name: AUNTIE_SOM_NOODLE_BASE_URL
+    value: http://127.0.0.1:5000
+  - secret: true
+    name: TOKEN
+  - name: LAST_ORDER_ID
+    value: ""

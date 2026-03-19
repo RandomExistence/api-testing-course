@@ -1,7 +1,7 @@
 info:
-  name: create order invalid quantity
+  name: create order invalid auth
   type: http
-  seq: 1
+  seq: 5
 
 http:
   method: POST
@@ -11,21 +11,21 @@ http:
     data: |-
       {
         "itemId":1,
-        "quantity":0
+        "quantity":1
       }
   auth:
     type: bearer
-    token: "{{TOKEN}}"
+    token: "{{INVALID_TOKEN}}"
 
 runtime:
   assertions:
     - expression: res.status
       operator: eq
-      value: "400"
-    - expression: res.body.error
-      operator: isString
+      value: "401"
     - expression: res.body.orderId
       operator: isUndefined
+    - expression: res.body.error
+      operator: isString
 
 settings:
   encodeUrl: true

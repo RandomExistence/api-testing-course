@@ -1,18 +1,27 @@
 info:
-  name: get order no auth
+  name: create order 0 quantity
   type: http
-  seq: 9
+  seq: 1
 
 http:
-  method: GET
-  url: "{{AUNTIE_SOM_NOODLE_BASE_URL}}/orders/{{LAST_ORDER_ID}}"
-  auth: inherit
+  method: POST
+  url: "{{AUNTIE_SOM_NOODLE_BASE_URL}}/orders"
+  body:
+    type: json
+    data: |-
+      {
+        "itemId":1,
+        "quantity":0
+      }
+  auth:
+    type: bearer
+    token: "{{TOKEN}}"
 
 runtime:
   assertions:
     - expression: res.status
       operator: eq
-      value: "401"
+      value: "400"
     - expression: res.body.error
       operator: isString
     - expression: res.body.orderId

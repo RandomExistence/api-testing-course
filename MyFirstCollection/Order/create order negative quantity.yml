@@ -17,6 +17,16 @@ http:
     type: bearer
     token: "{{TOKEN}}"
 
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "400"
+    - expression: res.body.error
+      operator: isString
+    - expression: res.body.orderId
+      operator: isUndefined
+
 settings:
   encodeUrl: true
   timeout: 0
